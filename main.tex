@@ -1,0 +1,39 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{guitarchordschemes}
+\usepackage[full]{leadsheets}
+\usepackage[unicode]{hyperref}
+\usepackage[toc]{glossaries}
+\setcounter{secnumdepth}{0}
+\usepackage{glossary-mcols}
+\usepackage{newclude}
+
+\title{Guitar songs}
+\author{Mikuláš Bankovič}
+\date{June 2020}
+
+\makeglossaries
+\loadglsentries{glossary-chords}
+
+\addto\captionsenglish{
+  \renewcommand{\contentsname}%
+    {Table of Songs}%
+}
+
+\usepackage{subfiles}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\pagebreak
+
+\section{English}
+\subfile{english}
+
+\pagebreak
+\printglossary[style=mcolindex, title=Chords]
+
+\end{document}
