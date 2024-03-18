@@ -37,10 +37,7 @@ def main():
     print("######### CONVERT HTML TO PDF #######################")
     print("#####################################################")
 
-    songs = [
-        get_song_entry(e)
-        for e in config.HTML_DIR.iterdir()
-    ]
+    songs = [get_song_entry(e) for e in config.HTML_DIR.iterdir()]
 
     env = Environment(loader=FileSystemLoader(str(config.ROOT_DIR)))
     book_template = env.get_template(config.TEMPLATE_BOOK)
@@ -48,7 +45,10 @@ def main():
     def sorting_key(song):
         return song.artist, song.title
 
-    sorted_paths = [str(Path(*song.path.parts[len(config.ROOT_DIR.parts):])) for song in sorted(songs, key=sorting_key)]
+    sorted_paths = [
+        str(Path(*song.path.parts[len(config.ROOT_DIR.parts) :]))
+        for song in sorted(songs, key=sorting_key)
+    ]
     book_content = book_template.render(songs=sorted_paths)
 
     html_file_path = config.FINAL_OUTPUT_DIRECTORY / "songbook.html"
@@ -57,11 +57,15 @@ def main():
     with open(html_file_path, "w", encoding="utf-8") as f:
         f.write(book_content)
 
-    shutil.copyfile(config.TEMPLATE_STYLE, config.FINAL_OUTPUT_DIRECTORY / config.TEMPLATE_STYLE.name)
+    shutil.copyfile(
+        config.TEMPLATE_STYLE,
+        config.FINAL_OUTPUT_DIRECTORY / config.TEMPLATE_STYLE.name,
+    )
 
     configuration = pdfkit.configuration(wkhtmltopdf=config.WKHTMLTOPDF)
     options = {
         "--enable-local-file-access": "",
+        "--footer-center":"[page]",
     }
 
     pdfkit.from_file(
@@ -71,7 +75,6 @@ def main():
         configuration=configuration,
         toc={
             "toc-header-text": "Table of Contents",
-            
         },
         options=options,
     )
